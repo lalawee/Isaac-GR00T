@@ -90,7 +90,14 @@ class Gr00tPolicy(BasePolicy):
 
         # Store embodiment-specific configurations
         self.embodiment_tag = embodiment_tag
-        self.modality_configs = self.processor.get_modality_configs()[self.embodiment_tag.value]
+        modality_map = self.processor.get_modality_configs()
+
+        # If the processor doesn't know about your custom embodiment, fall back to the global registry.
+        if self.embodiment_tag.value not in modality_map:
+            from gr00t.configs.data import embodiment_configs
+            modality_map = {**modality_map, **embodiment_configs.MODALITY_CONFIGS}
+
+        self.modality_configs = modality_map[self.embodiment_tag.value]
         self.collate_fn = self.processor.collator
 
         # Extract and validate language configuration

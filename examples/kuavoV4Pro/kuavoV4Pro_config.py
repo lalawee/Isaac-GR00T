@@ -53,4 +53,7 @@ kuavoV4Pro_config = {
     ),
 }
 
-register_modality_config(kuavoV4Pro_config, embodiment_tag=EmbodimentTag.NEW_EMBODIMENT)
+from gr00t.configs.data import embodiment_configs
+
+if EmbodimentTag.NEW_EMBODIMENT.value not in embodiment_configs.MODALITY_CONFIGS:
+    register_modality_config(kuavoV4Pro_config, embodiment_tag=EmbodimentTag.NEW_EMBODIMENT)
